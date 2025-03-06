@@ -94,7 +94,7 @@ app.post('/create_preference', async (req, res) => {
           failure: 'http://localhost:4200/home',
         },
         auto_return: 'approved',
-        notification_url: 'https://f923-2803-9800-b8ca-80a8-c40-a3e7-fdd4-786c.ngrok-free.app/payment_webhook',
+        notification_url: 'https://agroback-yp7t.onrender.com/payment_webhook',
         external_reference: consultaId, // Usamos el ID de la consulta como referencia externa
       },
     });
@@ -214,7 +214,7 @@ app.post('/create_subscription', async (req, res) => {
       },
       payer_email: email, // Email del pagador
       back_url: 'https://masnomada.com/home',
-      notification_url: 'https://f923-2803-9800-b8ca-80a8-c40-a3e7-fdd4-786c.ngrok-free.app/sub_success',
+      notification_url: 'https://agroback-yp7t.onrender.com/sub_success',
       status: 'pending',
     };
 
