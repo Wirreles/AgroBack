@@ -380,26 +380,33 @@ async function handleSubscriptionSuccess(subscriptionId) {
     await doc.ref.update({ status: "approved" });
 
     // Crear el usuario en la base de datos (si no existe)
-    const usersRef = firestore.collection("usuarios").doc(external_reference);
+    const newUserId = createIdDoc(); // Generamos un nuevo ID único
+    const usersRef = firestore.collection("usuarios").doc(newUserId);
     const userDoc = await usersRef.get();
 
     if (!userDoc.exists) {
-      console.log(`Creando usuario con ID: ${external_reference}`);
+      console.log(`Creando usuario con ID: ${newUserId}`);
 
       await usersRef.set({
         dni: subData.dni, // Accedemos correctamente al dni desde los datos de la suscripción
         nombre: subData.nombre, // Agregamos el nombre correctamente
         subscriptionId: subscriptionId,
-        active: false
+        active: false,
+        // external_reference: external_reference, 
       });
 
-      console.log(`Usuario ${external_reference} creado con éxito.`);
+      console.log(`Usuario ${newUserId} creado con éxito.`);
     } else {
-      console.log(`El usuario ${external_reference} ya existe.`);
+      console.log(`El usuario con ID ${newUserId} ya existe.`);
     }
   } catch (error) {
     console.error("Error al procesar la suscripción aprobada:", error.message);
   }
+}
+
+// Implementación de la función para generar un ID único (similar a createIdDoc)
+function createIdDoc() {
+  return firestore.collection('dummyCollection').doc().id; // Usamos un doc temporal para generar el ID
 }
 
 
