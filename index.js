@@ -404,12 +404,6 @@ async function handleSubscriptionSuccess(subscriptionId) {
   }
 }
 
-// Implementación de la función para generar un ID único (similar a createIdDoc)
-function createIdDoc() {
-  return firestore.collection('dummyCollection').doc().id; // Usamos un doc temporal para generar el ID
-}
-
-
 // Webhook para procesar pagos exitosos de suscripciones
 app.post("/sub_success", async (req, res) => {
   console.log("Webhook recibido: ", req.body);
@@ -450,6 +444,3 @@ function createIdDoc() {
 app.listen(process.env.PORT || 3333, () => {
   console.log("HTTP server running on port:", process.env.PORT || 3333);
 });
-
-
-
