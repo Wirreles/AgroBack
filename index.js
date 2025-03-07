@@ -392,7 +392,8 @@ async function handleSubscriptionSuccess(subscriptionId) {
         nombre: subData.nombre, // Agregamos el nombre correctamente
         subscriptionId: subscriptionId,
         active: false,
-        id: newUserId
+        id: newUserId,
+        telefono: subData.telefono
       });
 
       console.log(`Usuario ${newUserId} creado con éxito.`);
