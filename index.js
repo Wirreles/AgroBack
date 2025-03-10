@@ -56,7 +56,7 @@ app.post('/create_preference', async (req, res) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  const { price, dni } = req.body;
+  const { email, dni, price, nombre, telefono } = req.body;
 
   if (!price || !dni) {
     return res.status(400).json({ error: 'Faltan datos en la solicitud.' });
@@ -70,6 +70,9 @@ app.post('/create_preference', async (req, res) => {
     const consultaRef = firestore.collection('consultas').doc(consultaId);
     await consultaRef.set({
       id: consultaId,
+      email,
+      nombre,
+      telefono,
       price,
       dni,
       status: 'pending',
