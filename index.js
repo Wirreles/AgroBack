@@ -1,4 +1,5 @@
 import express from 'express';
+import nodemailer from 'nodemailer';
 import cors from 'cors';
 import { initializeApp } from 'firebase-admin/app'; // Puedes usar esto si sigues con import, pero...
 import admin from 'firebase-admin';  // Aquí necesitas `require` para Firebase
@@ -338,6 +339,35 @@ async function pollSubscriptionStatus(subscriptionId, maxRetries = 10, interval 
   return false; // Finaliza sin éxito
 }
 
+
+// Crear un transportador con la configuración de Gmail
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Tu dirección de correo electrónico
+    pass: process.env.EMAIL_PASS, // Tu contraseña o aplicación de contraseña de Gmail
+  },
+});
+
+// Función para enviar el correo
+async function sendEmail(to, subject, text) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    text,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Correo enviado a ${to}`);
+  } catch (error) {
+    console.error('Error al enviar correo:', error);
+  }
+}
+
+
+
 // Función para manejar la suscripción aprobada
 async function handleSubscriptionSuccess(subscriptionId) {
   try {
@@ -391,13 +421,15 @@ async function handleSubscriptionSuccess(subscriptionId) {
       console.log(`Creando usuario con ID: ${newUserId}`);
 
       await usersRef.set({
-        dni: subData.dni, // Accedemos correctamente al dni desde los datos de la suscripción
-        nombre: subData.nombre, // Agregamos el nombre correctamente
+        dni: subData.dni, 
+        nombre: subData.nombre,
         subscriptionId: subscriptionId,
         active: false,
         id: newUserId,
         telefono: subData.telefono
       });
+      sendEmail('agrofonoempresa@gmail.com', 'Nuevo Usuario Creado', `Se ha creado un nuevo usuario con DNI: ${subData.dni}.`);
+
 
       console.log(`Usuario ${newUserId} creado con éxito.`);
     } else {
