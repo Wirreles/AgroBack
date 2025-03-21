@@ -76,7 +76,7 @@ app.post('/create_preference', async (req, res) => {
       price,
       dni,
       status: 'pending',
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
     });
 
     // Crear la preferencia de pago en MercadoPago
@@ -93,8 +93,8 @@ app.post('/create_preference', async (req, res) => {
           },
         ],
         back_urls: {
-          success: 'http://localhost:4200/home',
-          failure: 'http://localhost:4200/home',
+          success: 'https://agrofono.com',
+          failure: 'https://agrofono.com',
         },
         auto_return: 'approved',
         notification_url: 'https://agroback-yp7t.onrender.com/payment_webhook',
@@ -174,7 +174,7 @@ app.post('/payment_webhook', async (req, res) => {
     // Actualiza la consulta con el estado "completed"
     await consultaRef.update({
       status: "completed",
-      paymentDate: new Date(),
+      paymentDate: new Date().toString(),
       payerEmail: payer?.email || null,
     });
 
@@ -216,7 +216,7 @@ app.post('/create_subscription', async (req, res) => {
         currency_id: 'ARS',
       },
       payer_email: email, // Email del pagador
-      back_url: 'https://masnomada.com/home',
+      back_url: 'https://agrofono.com',
       notification_url: 'https://agroback-yp7t.onrender.com/sub_success',
       status: 'pending',
     };
