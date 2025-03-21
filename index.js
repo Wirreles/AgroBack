@@ -90,7 +90,7 @@ app.post('/create_preference', async (req, res) => {
             id: consultaId,
             title: 'Consulta Agrofono',
             quantity: 1,
-            unit_price: price,
+            unit_price: parseFloat(price),
           },
         ],
         back_urls: {
@@ -213,7 +213,7 @@ app.post('/create_subscription', async (req, res) => {
       auto_recurring: {
         frequency: 1,
         frequency_type: 'months',
-        transaction_amount: price,
+        transaction_amount: parseFloat(price), // Verifica que es numérico
         currency_id: 'ARS',
       },
       payer_email: email, // Email del pagador
