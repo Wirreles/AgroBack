@@ -314,7 +314,8 @@ app.post('/start_subscription_check', async (req, res) => {
 });
 
 // Función de polling para verificar el estado de la suscripción
-async function pollSubscriptionStatus(subscriptionId, maxRetries = 10, interval = 20000) {
+async function pollSubscriptionStatus(subscriptionId, totalDuration = 600000, maxRetries = 15) {
+  const interval = Math.floor(totalDuration / maxRetries); // Calcula el intervalo dinámicamente
   let retries = 0;
 
   while (retries < maxRetries) {
@@ -338,6 +339,7 @@ async function pollSubscriptionStatus(subscriptionId, maxRetries = 10, interval 
   console.warn(`Tiempo de espera agotado para la suscripción ${subscriptionId}.`);
   return false; // Finaliza sin éxito
 }
+
 
 
 // Crear un transportador con la configuración de Gmail
